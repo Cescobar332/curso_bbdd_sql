@@ -1,0 +1,12 @@
+SELECT * FROM COURSES;
+
+SELECT coursename, description 
+FROM COURSES
+ORDER COURSENAME DESC;
+
+SELECT email, firstname
+FROM instructors
+ORDER BY loaddate ASC;
+
+DELETE FROM STUDENT_COURSES
+  WHERE student_course_id = 2;
