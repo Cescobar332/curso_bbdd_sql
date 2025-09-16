@@ -43,3 +43,30 @@ CREATE TABLE STUDENT_COURSES (
   FOREIGN KEY (STUDENTID) REFERENCES STUDENTS(STUDENTID),
   FOREIGN KEY (COURSEID) REFERENCES COURSES(COURSEID)
 );
+
+INSERT INTO STUDENTS (STUDENTID, FIRSTNAME, LASTNAME, AGE, EMAIL)
+VALUES
+(1, 'John', 'Doe', 25, 'john.doe@example.com'),
+(2, 'Emily', 'Clark', 22, 'emily.clark@example.com'),
+(3, 'Michael', 'Brown', 28, 'michael.brown@example.com'),
+(4, 'Sophia', 'Wilson', 20, 'sophia.wilson@example.com');
+
+INSERT INTO INSTRUCTORS (INSTRUCTORID, FIRSTNAME, LASTNAME, EMAIL, SPECIALIZATION, HIREDATE)
+VALUES 
+(1, 'Alice', 'Johnson', 'alice.johnson@academy.com', 'Databases', '2020-03-15'),
+(2, 'Bob', 'Smith', 'bob.smith@academy.com', 'Web Development', '2019-08-01'),
+(3, 'Clara', 'Martinez', 'clara.martinez@academy.com', 'DevOps', '2021-06-20');
+
+INSERT INTO COURSES (COURSEID, COURSENAME, DESCRIPTION, INSTRUCTORID, DURATIONHOURS)
+VALUES
+(101, 'Intro to Databases', 'Fundamentals of relational databases and SQL', 1, 40),
+(102, 'Web Development Basics', 'HTML, CSS, and JavaScript essentials', 2, 60),
+(103, 'DevOps Fundamentals', 'CI/CD pipelines and cloud deployment', 3, 50);
+
+INSERT INTO STUDENT_COURSES (STUDENTID, COURSEID, ENROLLMENT_DATE, STATUS)
+VALUES
+(1, 101, '2025-01-10', 'ACTIVE'),
+(1, 102, '2025-02-01', 'ACTIVE'),
+(2, 102, '2025-02-05', 'COMPLETED'),
+(3, 103, '2025-03-15', 'ACTIVE'),
+(4, 101, '2025-04-01', 'DROPPED');
