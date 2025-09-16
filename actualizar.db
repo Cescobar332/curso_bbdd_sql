@@ -1,0 +1,7 @@
+UPDATE INSTRUCTORS
+  SET firstname = 'Carolina'
+  WHERE firstname = 'Julian';
+
+UPDATE COURSES
+  SET coursename = 'Introduction to MySql'
+  WHERE coursename = 'Introduction to sql';
