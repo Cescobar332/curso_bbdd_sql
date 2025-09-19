@@ -1,0 +1,97 @@
+use("platzi_store")
+
+db.products.insertOne({
+  _id: 1,
+  name: "Product 1",
+  price: 1000
+})
+db.products.insertOne({
+  _id: 2,
+  name: "Product 2",
+  price: 100
+})
+db.products.find()
+
+db.products.drop()
+
+db.products.insertMany([
+  {
+    _id: 1,
+    name: "Product 1",
+    price: 100
+  },
+  {
+    _id: 2,
+    name: "Product 2",
+    price: 200
+  },
+  {
+    _id: 3,
+    name: "Product 3",
+    price: 300
+  },
+])
+
+db.products.insertMany([
+  {
+    _id: 1,
+    name: "Product 1",
+    price: 100
+  },
+  {
+    _id: 2,
+    name: "Product 2",
+    price: 200
+  },
+  {
+    _id: 1,
+    name: "Product 3",
+    price: 300
+  },
+  {
+    _id: 4,
+    name: "Product 4",
+    price: 400
+  }
+], {
+  ordered: false
+})
+
+db.products.updateOne(
+  // query
+  {_id: 2},
+  // change => operators
+  {
+    $set: {
+      name: 'Change name',
+      price: 3000,
+      tags: ['A', 'B', 'C']
+    }
+    $inc: {
+      price: 100,
+    }
+  }
+);
+
+db.products.updateMany (
+ { city: "CLEVELAND" },
+  {
+    $inc: {
+      pop: 1000
+    }
+    $rename: {
+      myAttr: "my_data"
+    }
+  }
+)
+
+db.products.deleteOne({_id: ObjectId("1212")})
+
+db.products.deleteMany(
+  {
+    price: 100
+  }
+)
+
+// Using $eq
+db.inventory.find({ qty: { $eq: 20 }})
