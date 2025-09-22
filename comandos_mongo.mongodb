@@ -95,3 +95,195 @@ db.products.deleteMany(
 
 // Using $eq
 db.inventory.find({ qty: { $eq: 20 }})
+
+//db.inventory.find({ "item.code": "123" })
+db.inventory.find({ "item.code": { $eq: "123" } })
+
+// Using $ne
+db.inventory.find({ qty: { $ne: 20 } })
+
+db.inventory.updateMany(
+  // query - operators
+  { qty: { $ne: 20} },
+  // update - operators
+  {
+    $inc: {
+      qty: 10
+    }
+  }
+)
+
+//Using $gt (>)
+db.inventory.find({ qty: { $gt: 20 } })
+
+//Using $gte (>=)
+db.inventory.find({ qty: { $gte: 20 } })
+
+//Using $lt
+db.inventory.find({ qty: { $lt: 20 } })
+
+//Using $lte
+db.inventory.find({ qty: { $lte: 20 } })
+
+//Join
+db.inventory.find({ qty: { $gte: 25, $lte: 35 } })
+db.inventory.find({ 
+  "item.name" : "ab",
+  qty: { $gte: 20, $lte: 25 } 
+})
+
+db.iot.updateMany(
+  //query
+  { sensor: "A001" },
+  //update
+  {
+    $pull: {
+      readings: { $gte: 3 }
+    }
+  }
+)
+
+//regex
+db.inventory.find({ "item.description" : { $regex: /line/ }})
+db.inventory.find({ "item.description" : { $regex: /LINE/i }})
+db.inventory.find({ "item.description" : { $regex: /line$/i }})
+db.inventory.find({ "item.description" : { $regex: /^single/i }})
+db.inventory.find({ "item.description" : { $regex: /^s/im }})
+
+//projection
+db.trips.find(
+  //query
+  { tripduration: { $gte: 500 }},
+  // projection
+  { tripduration: 1, usertype: 1}
+)
+
+//query arrays
+// $in , values & arrays
+db.inventory.find({ qty: { $in: [20, 25]} })
+db.inventory.find({ tags: { $in: ["book" , "electronics"]} })
+
+// $nin , values & arrays
+db.inventory.find({ tags: { $nin: ["book" , "electronics"]} })
+
+// $all, arrays
+db.inventory.find({ tags: {$all: ["book", "school"]} })
+
+// $size
+db.inventory.find({ tags: {$size: 2} })
+
+// $elemMatch
+db.survey.find({ results: { $elemMatch: { product: "xyz" }} })
+db.survey.find({ 
+  results: { 
+    $elemMatch: { 
+      product: "xyz", 
+      score: { $gte: 7 } 
+    }
+  } 
+})
+
+// and implicit
+db.inspections.find({
+  sector: "Tax Preparers - 891",
+  result: "Unable to Locate"
+}).count()
+
+// and explicit
+// $and [{}, {}, {}]
+db.inspections.find({
+  $and: [
+    { sector: "Tax Preparers - 891" },
+    { result: "Unable to Locate" }
+  ]
+}).count()
+
+// or
+// $or [{}, {}, {}]
+db.inspections.find({
+  $or: [
+    { sector: "Tax Preparers - 891" },
+    { result: "Unable to Locate" }
+  ]
+}).count()
+
+// nor
+// $nor [{}, {}, {}]
+db.inspections.find({
+  $nor: [
+    { sector: "Tax Preparers - 891" },
+    { result: "Unable to Locate" }
+  ]
+}).count()
+
+// $not = {}
+db.inspections.find({
+  result: { $not: { $regex: /Unable to Locate/ }}
+})
+
+//join
+db.routes.find({
+  $and: [
+    { airplane: "E70" },
+    {
+      $or: [
+        { dst_airport: "BOG" },
+        { src_airport: "BOG" },
+      ]
+    }
+  ]
+}).count()
+
+//Expresive operator
+db.monthlyBudget.find({
+  $expr: {
+    $gte: ["$spent", "$budget"]
+  }
+})
+db.trips.find({
+  $expr: {
+    $and: [
+      { $eq: ["$start station id", "$end station id"] },
+      { $gte: ["tripduration", 1200] }
+    ]  
+  }
+}).count()
+
+db.trips.find({"start station location.type": "Point" })
+
+db.companies.find({
+  "relationships.0.person.last_name" : "Zuckerberg"
+}, {
+  name: 1,
+  relationships: 1
+}).count()
+
+db.companies.find({
+  relationships: {
+    $elemMatch: {
+      "person.first_name" : "Mark"
+    }
+  }
+}, {
+  name: 1,
+  relationships: 1
+}).count()
+
+//Aggregation framework
+// [], [], []
+db.listingsAndReviews.aggregate([
+  { $match: { amenities: "WiFi" } }, // find
+  { $project: { price: 1, amenities: 1} }, // project
+  { $group: { _id: "address.country", count: { $sum: 1 } } }
+])
+
+//sort, limit
+db.zips
+  .find({ pop: { $gte: 100 } })
+  .sort({ pop: 1 })
+  .limit(2)
+
+db.categories
+  .find()
+  .skip(2)
+  .limit(2)
